@@ -11,8 +11,9 @@
 */
 
 unsigned long current_time = 0;
-unsigned long blink_period = 500;
+unsigned long blink_period = 100;
 bool blink_state = false;
+unsigned long blink_start_time = 0;
 
 static const uint8_t motor_pin = 5;
 
@@ -44,9 +45,10 @@ void loop() {
   unsigned long new_current_time = millis();
   
   // Blink
-  if (new_current_time - current_time > blink_period) {
+  if (new_current_time - blink_start_time > blink_period) {
     blink_state = !blink_state;
     digitalWrite(LED_BUILTIN, blink_state);
+    blink_start_time = new_current_time;
   }
   
   // Read the potentiometer
